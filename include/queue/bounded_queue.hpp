@@ -1,5 +1,6 @@
 #pragma once
 #include "queue/queue.hpp"
+
 #include <condition_variable>
 #include <memory>
 #include <mutex>
@@ -22,7 +23,7 @@ public:
 
     std::optional<std::function<void()>> try_pop() override;
 
-    ~BoundedQueue() override;
+    ~BoundedQueue() override = default;
 };
 
 }  // namespace dispatcher::queue

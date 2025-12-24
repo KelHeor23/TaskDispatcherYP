@@ -37,9 +37,17 @@ TEST(BoundedQueue, TryPopMany) {
     t2.detach();
     t3.detach();
 
-    for (int i = 0; i < 3; i++) {
+    /*for (int i = 0; i < 3; i++) {
         auto task = queue.try_pop();
         task.value()();
+    }*/
+
+    for (int i = 0; i < 3;) {
+        auto task = queue.try_pop();
+        if (task.has_value()) {
+            task.value()();
+            i++;
+        }
     }
 
     EXPECT_TRUE(temp1);
