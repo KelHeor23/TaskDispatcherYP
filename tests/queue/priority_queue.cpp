@@ -77,5 +77,6 @@ TEST(PriorityQueue, ShutdownWhenPopBlocked) {
     priority_queue.shutdown();
 
     EXPECT_EQ(future.wait_for(std::chrono::milliseconds(20)), std::future_status::ready);
+    EXPECT_FALSE(future.get());
 }
 }  // namespace dispatcher::queue
