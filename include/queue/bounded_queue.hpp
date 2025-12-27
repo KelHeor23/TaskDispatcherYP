@@ -1,10 +1,21 @@
 #pragma once
 #include "queue/queue.hpp"
 
+#include <atomic>
+#include <condition_variable>
+#include <mutex>
+#include <queue>
+
 namespace dispatcher::queue {
 
 class BoundedQueue : public IQueue {
-    // здесь ваш код
+private:
+    std::mutex mtx_;
+    std::condition_variable cv_not_full_;
+    std::queue<std::function<void()>> queue_;
+    std::atomic_bool active_ = true;
+    std::atomic_uint capacity_;
+
 public:
     explicit BoundedQueue(int capacity);
 
