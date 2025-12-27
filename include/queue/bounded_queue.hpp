@@ -1,8 +1,8 @@
 #pragma once
 #include "queue/queue.hpp"
 
+#include <atomic>
 #include <condition_variable>
-#include <memory>
 #include <mutex>
 #include <queue>
 
@@ -10,11 +10,11 @@ namespace dispatcher::queue {
 
 class BoundedQueue : public IQueue {
 private:
-    std::unique_ptr<QueueOptions> option_;
     std::mutex mtx_;
     std::condition_variable cv_not_full_;
-    std::condition_variable cv_not_empty_;
     std::queue<std::function<void()>> queue_;
+    std::atomic_bool active_ = true;
+    std::atomic_uint capacity_;
 
 public:
     explicit BoundedQueue(int capacity);
@@ -23,7 +23,7 @@ public:
 
     std::optional<std::function<void()>> try_pop() override;
 
-    ~BoundedQueue() override = default;
+    ~BoundedQueue() override;
 };
 
 }  // namespace dispatcher::queue

@@ -10,7 +10,6 @@ namespace dispatcher::queue {
 
 class UnboundedQueue : public IQueue {
     std::mutex mtx_;
-    std::condition_variable cv_not_empty_;
     std::queue<std::function<void()>> queue_;
 
 public:
